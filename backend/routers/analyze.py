@@ -16,7 +16,7 @@ client = OpenAI(
 
 def get_llm_response(prompt: str) -> str:
     response = client.chat.completions.create(
-        model="Phi-3.5-mini-instruct-generic-gpu:2",
+        model="qwen2.5-1.5b-instruct-generic-gpu:4",
         max_tokens=1000,
         temperature=0.1,
         messages=[

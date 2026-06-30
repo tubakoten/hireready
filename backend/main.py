@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from models.database import create_tables
-from routers import auth, cv, analyze
+from routers import auth, cv, analyze, interview
 from foundry_local_sdk import FoundryLocalManager, Configuration
 
 app = FastAPI(title="HireReady API")
@@ -22,6 +22,7 @@ create_tables()
 app.include_router(auth.router)
 app.include_router(cv.router)
 app.include_router(analyze.router)
+app.include_router(interview.router)
 
 @app.get("/")
 def root():
