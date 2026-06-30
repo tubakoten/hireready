@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import api from '../api'
 
 function Interview() {
   const [step, setStep] = useState('setup')
-  const [cvId, setCvId] = useState('')
+  const [cvList, setCvList] = useState([])
+  const [selectedCv, setSelectedCv] = useState('')
   const [position, setPosition] = useState('')
   const [level, setLevel] = useState('junior')
   const [language, setLanguage] = useState('tr')
@@ -14,15 +15,23 @@ function Interview() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  useEffect(() => {
+    api.get('/cv/list').then(res => setCvList(res.data)).catch(() => {})
+  }, [])
+
   const startInterview = async () => {
-    if (!cvId || !position) {
-      setError('CV ID ve pozisyon zorunlu')
+    if (!selectedCv) {
+      setError('Lütfen bir CV seçin')
+      return
+    }
+    if (!position) {
+      setError('Pozisyon zorunlu')
       return
     }
     setLoading(true)
     setError('')
     try {
-      const res = await api.post(`/interview/questions?cv_id=${cvId}&position=${encodeURIComponent(position)}&level=${level}&language=${language}`)
+      const res = await api.post(`/interview/questions?cv_id=${selectedCv}&position=${encodeURIComponent(position)}&level=${level}&language=${language}`)
       setQuestions(res.data.questions)
       setStep('questions')
     } catch (err) {
@@ -61,14 +70,23 @@ function Interview() {
 
         <div className="space-y-4">
           <div>
-            <label className="text-sm text-gray-400 mb-1 block">CV ID</label>
-            <input
-              type="number"
-              value={cvId}
-              onChange={e => setCvId(e.target.value)}
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
-              placeholder="1"
-            />
+            <label className="text-sm text-gray-400 mb-1 block">CV Seç</label>
+            {cvList.length === 0 ? (
+              <div className="bg-yellow-900/30 border border-yellow-700 text-yellow-400 px-4 py-3 rounded-lg">
+                Henüz CV yüklemediniz. Önce <a href="/analyze" className="underline">CV Analiz</a> sayfasından CV yükleyin.
+              </div>
+            ) : (
+              <select
+                value={selectedCv}
+                onChange={e => setSelectedCv(e.target.value)}
+                className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
+              >
+                <option value="">-- CV Seç --</option>
+                {cvList.map(cv => (
+                  <option key={cv.id} value={cv.id}>{cv.filename}</option>
+                ))}
+              </select>
+            )}
           </div>
           <div>
             <label className="text-sm text-gray-400 mb-1 block">Pozisyon</label>
@@ -105,7 +123,7 @@ function Interview() {
           </div>
           <button
             onClick={startInterview}
-            disabled={loading}
+            disabled={loading || cvList.length === 0}
             className="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-lg font-medium transition disabled:opacity-50 text-lg"
           >
             {loading ? '🧠 Sorular hazırlanıyor...' : 'Mülakata Başla →'}

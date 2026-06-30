@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import api from '../api'
 
 function Analyze() {
+  const [cvList, setCvList] = useState([])
+  const [selectedCv, setSelectedCv] = useState('')
   const [file, setFile] = useState(null)
   const [position, setPosition] = useState('')
   const [company, setCompany] = useState('')
@@ -11,9 +13,26 @@ function Analyze() {
   const [result, setResult] = useState(null)
   const [error, setError] = useState('')
 
+  useEffect(() => {
+    api.get('/cv/list').then(res => setCvList(res.data)).catch(() => {})
+  }, [])
+
+  const handleUpload = async () => {
+    if (!file) return null
+    const formData = new FormData()
+    formData.append('file', file)
+    const res = await api.post('/cv/upload', formData)
+    setCvList([...cvList, res.data])
+    return res.data.id
+  }
+
   const handleAnalyze = async () => {
-    if (!file || !position) {
-      setError('CV ve pozisyon zorunludur')
+    if (!position) {
+      setError('Pozisyon zorunludur')
+      return
+    }
+    if (!selectedCv && !file) {
+      setError('CV seçin veya yeni CV yükleyin')
       return
     }
     setLoading(true)
@@ -21,10 +40,11 @@ function Analyze() {
     setResult(null)
 
     try {
-      const formData = new FormData()
-      formData.append('file', file)
-      const uploadRes = await api.post('/cv/upload', formData)
-      const cvId = uploadRes.data.id
+      let cvId = selectedCv
+      if (file) {
+        cvId = await handleUpload()
+        setSelectedCv(cvId)
+      }
 
       const analyzeRes = await api.post('/analyze/cv', {
         cv_id: cvId,
@@ -44,20 +64,40 @@ function Analyze() {
   return (
     <main className="max-w-4xl mx-auto px-6 py-12">
       <h2 className="text-3xl font-bold mb-2">CV Analizi</h2>
-      <p className="text-gray-400 mb-8">CV'ni yükle, pozisyonu gir, AI analiz etsin.</p>
+      <p className="text-gray-400 mb-8">CV'ni yükle veya seç, pozisyonu gir, AI analiz etsin.</p>
 
       {error && <div className="bg-red-900/30 border border-red-700 text-red-400 px-4 py-3 rounded-lg mb-6">{error}</div>}
 
       <div className="grid grid-cols-2 gap-6 mb-6">
+
+        {cvList.length > 0 && (
+          <div className="col-span-2">
+            <label className="text-sm text-gray-400 mb-1 block">Kayıtlı CV'lerim</label>
+            <select
+              value={selectedCv}
+              onChange={e => { setSelectedCv(e.target.value); setFile(null) }}
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
+            >
+              <option value="">-- CV Seç --</option>
+              {cvList.map(cv => (
+                <option key={cv.id} value={cv.id}>{cv.filename}</option>
+              ))}
+            </select>
+          </div>
+        )}
+
         <div className="col-span-2">
-          <label className="text-sm text-gray-400 mb-1 block">CV (PDF)</label>
+          <label className="text-sm text-gray-400 mb-1 block">
+            {cvList.length > 0 ? 'Ya da Yeni CV Yükle (PDF)' : 'CV Yükle (PDF)'}
+          </label>
           <input
             type="file"
             accept=".pdf"
-            onChange={e => setFile(e.target.files[0])}
+            onChange={e => { setFile(e.target.files[0]); setSelectedCv('') }}
             className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-gray-300"
           />
         </div>
+
         <div>
           <label className="text-sm text-gray-400 mb-1 block">Hedef Pozisyon *</label>
           <input
