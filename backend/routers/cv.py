@@ -58,3 +58,16 @@ def list_cvs(
     current_user: User = Depends(get_current_user)
 ):
     return db.query(CV).filter(CV.user_id == current_user.id).all()
+
+@router.delete("/{cv_id}")
+def delete_cv(
+    cv_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    cv = db.query(CV).filter(CV.id == cv_id, CV.user_id == current_user.id).first()
+    if not cv:
+        raise HTTPException(status_code=404, detail="CV bulunamadı")
+    db.delete(cv)
+    db.commit()
+    return {"message": "CV silindi"}

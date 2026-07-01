@@ -54,6 +54,8 @@ function Analyze() {
         level
       })
       setResult(analyzeRes.data)
+      const count = parseInt(localStorage.getItem('analyzeCount') || '0')
+      localStorage.setItem('analyzeCount', count + 1)
     } catch (err) {
       setError(err.response?.data?.detail || 'Analiz başarısız')
     } finally {

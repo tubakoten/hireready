@@ -9,6 +9,7 @@ function Navbar() {
     { path: '/', label: 'Ana Sayfa' },
     { path: '/analyze', label: 'CV Analiz' },
     { path: '/interview', label: 'Mülakat' },
+    { path: '/cover-letter', label: 'Cover Letter' },
   ]
 
   const handleLogout = () => {
@@ -34,12 +35,24 @@ function Navbar() {
           </Link>
         ))}
         {token ? (
-          <button
-            onClick={handleLogout}
-            className="text-sm text-red-400 hover:text-red-300 transition"
-          >
-            Çıkış
-          </button>
+          <>
+            <Link
+              to="/dashboard"
+              className={`text-sm transition ${
+                location.pathname === '/dashboard'
+                  ? 'text-blue-400 font-medium'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              Profilim
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="text-sm text-red-400 hover:text-red-300 transition"
+            >
+              Çıkış
+            </button>
+          </>
         ) : (
           <Link
             to="/login"

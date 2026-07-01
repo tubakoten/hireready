@@ -51,6 +51,8 @@ function Interview() {
       if (currentQ < questions.length - 1) {
         setCurrentQ(currentQ + 1)
       } else {
+        const count = parseInt(localStorage.getItem('interviewCount') || '0')
+        localStorage.setItem('interviewCount', count + 1)
         setStep('evaluated')
       }
     } catch (err) {
