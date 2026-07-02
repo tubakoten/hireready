@@ -2,44 +2,113 @@ import { Link } from 'react-router-dom'
 
 function Home() {
   return (
-    <main className="max-w-4xl mx-auto px-6 py-20">
-      <div className="text-center">
-        <h2 className="text-5xl font-bold mb-6">
+    <div className="min-h-screen bg-gray-950 text-white">
+      {/* Hero */}
+      <section className="max-w-5xl mx-auto px-6 py-24 text-center">
+        <h1 className="text-6xl font-bold mb-6">
           Hayalindeki işe <span className="text-blue-400">hazırlan.</span>
-        </h2>
-        <p className="text-gray-400 text-xl mb-12 max-w-2xl mx-auto">
+        </h1>
+        <p className="text-gray-400 text-xl mb-10 max-w-2xl mx-auto">
           CV'ni yükle, hedef pozisyonunu gir. AI ile uygunluk analizi yap, mülakat sorularıyla pratik yap.
         </p>
-        <div className="flex gap-4 justify-center">
-          <Link
-            to="/analyze"
-            className="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-lg font-medium transition text-lg"
-          >
+        <div className="flex gap-4 justify-center mb-16">
+          <Link to="/analyze" className="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-lg font-medium transition text-lg">
             CV Analiz Et →
           </Link>
-          <Link
-            to="/interview"
-            className="border border-gray-700 hover:border-gray-500 px-8 py-4 rounded-lg font-medium transition text-lg"
-          >
+          <Link to="/interview" className="border border-gray-700 hover:border-gray-500 px-8 py-4 rounded-lg font-medium transition text-lg">
             Mülakat Pratiği
           </Link>
         </div>
-      </div>
+      </section>
 
-      <div className="grid grid-cols-3 gap-6 mt-24">
-        {[
-          { title: 'CV Analizi', desc: 'Pozisyona uygunluk skoru ve eksik beceriler', icon: '📄' },
-          { title: 'Mülakat Simülasyonu', desc: 'Gerçek sorularla pratik yap, anında feedback al', icon: '🎤' },
-          { title: 'Cover Letter', desc: 'Pozisyona özel kapak mektubu üret', icon: '✉️' },
-        ].map(card => (
-          <div key={card.title} className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-            <div className="text-3xl mb-3">{card.icon}</div>
-            <h3 className="font-semibold text-lg mb-2">{card.title}</h3>
-            <p className="text-gray-400 text-sm">{card.desc}</p>
+      {/* Features */}
+      <section className="max-w-5xl mx-auto px-6 pb-16">
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h2 className="text-3xl font-bold">Zekanızı <span className="text-blue-400">Kariyerinizle</span> Birleştirin</h2>
+            <p className="text-gray-400 mt-2">Kariyer yolculuğunuzda size rehberlik edecek en gelişmiş yapay zeka araçlarını keşfedin.</p>
           </div>
-        ))}
-      </div>
-    </main>
+          <Link to="/analyze" className="text-sm text-gray-400 hover:text-white transition whitespace-nowrap">
+            Tüm Özellikleri Gör →
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-3 gap-6">
+          {[
+            {
+              icon: '📄',
+              title: 'CV Analizi',
+              desc: 'Pozisyona uygunluk skoru ve eksik beceriler. ATS sistemlerinden geçmenizi sağlayacak derinlemesine analizler.',
+              link: '/analyze',
+              cta: 'Analizi Başlat'
+            },
+            {
+              icon: '🎤',
+              title: 'Mülakat Simülasyonu',
+              desc: 'Gerçek sorularla pratik yap, anında feedback al. Yapay zeka ile sesli ve görüntülü mülakat deneyimi.',
+              link: '/interview',
+              cta: 'Pratiğe Git'
+            },
+            {
+              icon: '✉️',
+              title: 'Cover Letter',
+              desc: 'Pozisyona özel kapak mektubu üret. Şirket kültürüne ve iş tanımına tam uyumlu, etkileyici metinler.',
+              link: '/cover-letter',
+              cta: 'Oluşturmaya Başla'
+            },
+          ].map(card => (
+            <div key={card.title} className="bg-gray-900 border border-gray-800 rounded-xl p-6 hover:border-gray-700 transition">
+              <div className="text-3xl mb-4">{card.icon}</div>
+              <h3 className="font-semibold text-lg mb-2">{card.title}</h3>
+              <p className="text-gray-400 text-sm mb-4">{card.desc}</p>
+              <Link to={card.link} className="text-blue-400 text-sm hover:text-blue-300 transition">
+                {card.cta} ↗
+              </Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Roadmap CTA */}
+      <section className="max-w-5xl mx-auto px-6 pb-24">
+        <div className="grid grid-cols-2 gap-6">
+          <div className="bg-gray-900 border border-gray-800 rounded-xl p-8">
+            <h2 className="text-2xl font-bold mb-3">
+              Kariyer <span className="text-blue-400">Yol Haritan</span> Hazır Mı?
+            </h2>
+            <p className="text-gray-400 mb-6">
+              Sadece nerede olduğunuzu değil, nereye gidebileceğinizi de gösteriyoruz. Hedeflediğiniz maaş ve pozisyon için öğrenmeniz gereken teknolojileri listeliyoruz.
+            </p>
+            <div className="flex gap-2 flex-wrap mb-6">
+              {['React & Next.js', 'Python AI', 'Data Science', 'Cloud Architecture'].map(tag => (
+                <span key={tag} className="text-xs bg-gray-800 text-gray-300 px-3 py-1 rounded-full">{tag}</span>
+              ))}
+            </div>
+            <Link to="/roadmap" className="text-blue-400 text-sm hover:text-blue-300 transition">
+              Yol Haritamı Oluştur →
+            </Link>
+          </div>
+          <div className="bg-gray-900 border border-gray-800 rounded-xl p-8 flex items-center justify-center">
+            <div className="text-center">
+              <div className="text-5xl mb-4">🗺️</div>
+              <p className="text-gray-400 text-sm">Kariyer Yol Haritanız</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-gray-800 px-6 py-6">
+        <div className="max-w-5xl mx-auto flex justify-between items-center">
+          <p className="text-gray-500 text-sm">HireReady AI © 2024 All rights reserved.</p>
+          <div className="flex gap-6">
+            <span className="text-gray-500 text-sm cursor-pointer hover:text-gray-300">Privacy Policy</span>
+            <span className="text-gray-500 text-sm cursor-pointer hover:text-gray-300">Terms of Service</span>
+            <span className="text-gray-500 text-sm cursor-pointer hover:text-gray-300">Contact Support</span>
+          </div>
+        </div>
+      </footer>
+    </div>
   )
 }
 

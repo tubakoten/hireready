@@ -46,75 +46,104 @@ function CoverLetter() {
   }
 
   return (
-    <main className="max-w-4xl mx-auto px-6 py-12">
-      <h2 className="text-3xl font-bold mb-2">Cover Letter</h2>
-      <p className="text-gray-400 mb-8">CV'ne ve pozisyona özel kapak mektubu üret.</p>
-
+    <main className="max-w-5xl mx-auto px-6 py-12">
       {error && <div className="bg-red-900/30 border border-red-700 text-red-400 px-4 py-3 rounded-lg mb-6">{error}</div>}
 
-      <div className="grid grid-cols-2 gap-6 mb-6">
-        <div className="col-span-2">
-          <label className="text-sm text-gray-400 mb-1 block">CV Seç</label>
-          {cvList.length === 0 ? (
-            <div className="bg-yellow-900/30 border border-yellow-700 text-yellow-400 px-4 py-3 rounded-lg">
-              Henüz CV yüklemediniz. Önce <a href="/analyze" className="underline">CV Analiz</a> sayfasından CV yükleyin.
+      <div className="grid grid-cols-2 gap-10 mb-10">
+        {/* Sol - Başlık ve Görsel */}
+        <div>
+          <span className="text-xs bg-blue-600/20 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-full">✨ AI-POWERED WRITER</span>
+          <h2 className="text-4xl font-bold mt-4 mb-4">Cover Letter</h2>
+          <p className="text-gray-400 mb-6">Generate a tailored, professional cover letter that aligns your unique skills with your target position's requirements in seconds.</p>
+          <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+            <div className="bg-gray-800 px-4 py-2 flex gap-2">
+              <div className="w-3 h-3 rounded-full bg-red-500"></div>
+              <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+              <div className="w-3 h-3 rounded-full bg-green-500"></div>
             </div>
-          ) : (
-            <select
-              value={selectedCv}
-              onChange={e => setSelectedCv(e.target.value)}
-              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
+            <div className="p-4 font-mono text-xs text-gray-400 space-y-1">
+              <p>Sayın İşe Alım Ekibi,</p>
+              <p className="mt-2">Frontend Developer pozisyonu için...</p>
+              <p>React ve TypeScript konusundaki...</p>
+              <p>deneyimlerimle katkı sağlamak...</p>
+              <p className="mt-2">Saygılarımla,</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Sağ - Form */}
+        <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm text-gray-400 mb-1 flex items-center gap-2 block">📄 CV Seç</label>
+              {cvList.length === 0 ? (
+                <div className="bg-yellow-900/30 border border-yellow-700 text-yellow-400 px-4 py-3 rounded-lg text-sm">
+                  Önce <a href="/analyze" className="underline">CV Analiz</a> sayfasından CV yükleyin.
+                </div>
+              ) : (
+                <select
+                  value={selectedCv}
+                  onChange={e => setSelectedCv(e.target.value)}
+                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
+                >
+                  <option value="">-- CV Seç --</option>
+                  {cvList.map(cv => (
+                    <option key={cv.id} value={cv.id}>{cv.filename}</option>
+                  ))}
+                </select>
+              )}
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-sm text-gray-400 mb-1 flex items-center gap-2 block">🗂️ Pozisyon *</label>
+                <input
+                  type="text"
+                  value={position}
+                  onChange={e => setPosition(e.target.value)}
+                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
+                  placeholder="Frontend Developer"
+                />
+              </div>
+              <div>
+                <label className="text-sm text-gray-400 mb-1 flex items-center gap-2 block">🏢 Şirket *</label>
+                <input
+                  type="text"
+                  value={company}
+                  onChange={e => setCompany(e.target.value)}
+                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
+                  placeholder="Microsoft"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="text-sm text-gray-400 mb-1 flex items-center gap-2 block">🌐 Dil</label>
+              <select
+                value={language}
+                onChange={e => setLanguage(e.target.value)}
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
+              >
+                <option value="tr">Türkçe</option>
+                <option value="en">English</option>
+              </select>
+            </div>
+
+            <button
+              onClick={handleGenerate}
+              disabled={loading || cvList.length === 0}
+              className="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-lg font-medium transition disabled:opacity-50 text-lg"
             >
-              <option value="">-- CV Seç --</option>
-              {cvList.map(cv => (
-                <option key={cv.id} value={cv.id}>{cv.filename}</option>
-              ))}
-            </select>
-          )}
-        </div>
+              {loading ? '✉️ Hazırlanıyor...' : 'Kapak Mektubu Oluştur →'}
+            </button>
 
-        <div>
-          <label className="text-sm text-gray-400 mb-1 block">Pozisyon *</label>
-          <input
-            type="text"
-            value={position}
-            onChange={e => setPosition(e.target.value)}
-            className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
-            placeholder="Frontend Developer"
-          />
-        </div>
-
-        <div>
-          <label className="text-sm text-gray-400 mb-1 block">Şirket *</label>
-          <input
-            type="text"
-            value={company}
-            onChange={e => setCompany(e.target.value)}
-            className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
-            placeholder="Microsoft"
-          />
-        </div>
-
-        <div>
-          <label className="text-sm text-gray-400 mb-1 block">Dil</label>
-          <select
-            value={language}
-            onChange={e => setLanguage(e.target.value)}
-            className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
-          >
-            <option value="tr">Türkçe</option>
-            <option value="en">English</option>
-          </select>
+            <div className="flex justify-center gap-6 text-xs text-gray-500">
+              <span>✓ ATS Optimized</span>
+              <span>⚡ Instant Result</span>
+            </div>
+          </div>
         </div>
       </div>
-
-      <button
-        onClick={handleGenerate}
-        disabled={loading || cvList.length === 0}
-        className="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-lg font-medium transition disabled:opacity-50 text-lg mb-8"
-      >
-        {loading ? '✉️ Kapak mektubu hazırlanıyor...' : 'Kapak Mektubu Oluştur →'}
-      </button>
 
       {result && (
         <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
