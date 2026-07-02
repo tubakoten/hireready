@@ -10,6 +10,7 @@ function Navbar() {
     { path: '/analyze', label: 'CV Analiz' },
     { path: '/interview', label: 'Mülakat' },
     { path: '/cover-letter', label: 'Cover Letter' },
+    { path: '/roadmap', label: 'Yol Haritası' },
   ]
 
   const handleLogout = () => {

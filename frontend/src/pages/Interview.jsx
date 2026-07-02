@@ -41,6 +41,22 @@ function Interview() {
     }
   }
 
+  const generateNewQuestion = async () => {
+    setLoading(true)
+    try {
+      const res = await api.post(`/interview/questions?cv_id=${selectedCv}&position=${encodeURIComponent(position)}&level=${level}&language=${language}`)
+      const newQuestions = [...questions]
+      // Mevcut sorudan farklı bir soru bul
+      const newQ = res.data.questions.find(q => q !== questions[currentQ]) || res.data.questions[0]
+      newQuestions[currentQ] = newQ
+      setQuestions(newQuestions)
+    } catch (err) {
+      console.error('Yeni soru üretilemedi')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const submitAnswer = async () => {
     if (!answer.trim()) return
     setLoading(true)
@@ -154,13 +170,22 @@ function Interview() {
           placeholder="Cevabını buraya yaz..."
         />
 
-        <button
-          onClick={submitAnswer}
-          disabled={loading}
-          className="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-lg font-medium transition disabled:opacity-50"
-        >
-          {loading ? '🧠 Değerlendiriliyor...' : currentQ < questions.length - 1 ? 'Sonraki Soru →' : 'Bitir →'}
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={generateNewQuestion}
+            disabled={loading}
+            className="flex-1 border border-gray-700 text-gray-500 hover:border-red-800 hover:text-red-400 py-4 rounded-lg font-medium transition disabled:opacity-50"
+          >
+            👎 Soruyu yenile
+          </button>
+          <button
+            onClick={submitAnswer}
+            disabled={loading}
+            className="flex-[2] bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-lg font-medium transition disabled:opacity-50"
+          >
+            {loading ? '🧠 Değerlendiriliyor...' : currentQ < questions.length - 1 ? 'Sonraki Soru →' : 'Bitir →'}
+          </button>
+        </div>
       </main>
     )
   }

@@ -6,6 +6,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import CoverLetter from './pages/CoverLetter'
+import Roadmap from './pages/Roadmap'
 import Navbar from './components/Navbar'
 
 function ProtectedRoute({ children }) {
@@ -27,6 +28,7 @@ function App() {
           <Route path="/interview" element={<ProtectedRoute><Interview /></ProtectedRoute>} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/cover-letter" element={<ProtectedRoute><CoverLetter /></ProtectedRoute>} />
+          <Route path="/roadmap" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
         </Routes>
       </div>
     </BrowserRouter>

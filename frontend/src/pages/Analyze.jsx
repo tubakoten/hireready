@@ -71,7 +71,6 @@ function Analyze() {
       {error && <div className="bg-red-900/30 border border-red-700 text-red-400 px-4 py-3 rounded-lg mb-6">{error}</div>}
 
       <div className="grid grid-cols-2 gap-6 mb-6">
-
         {cvList.length > 0 && (
           <div className="col-span-2">
             <label className="text-sm text-gray-400 mb-1 block">Kayıtlı CV'lerim</label>
@@ -186,6 +185,15 @@ function Analyze() {
                 <li key={i} className="text-gray-300 text-sm">• {s}</li>
               ))}
             </ul>
+          </div>
+
+          <div className="text-center">
+            <button
+              onClick={() => window.location.href = `/roadmap?cv_id=${selectedCv}&position=${encodeURIComponent(position)}`}
+              className="bg-purple-600 hover:bg-purple-700 px-8 py-4 rounded-lg font-medium transition text-lg"
+            >
+              🗺️ Öğrenme Yol Haritası Oluştur →
+            </button>
           </div>
         </div>
       )}
