@@ -1,1 +1,26 @@
 @import "tailwindcss";
+
+body {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.light .card {
+  background-color: #ffffff;
+  border-color: #e5e7eb;
+}
+
+.light input, .light select, .light textarea {
+  background-color: #f9fafb !important;
+  border-color: #d1d5db !important;
+  color: #111827 !important;
+}
+
+.light .bg-gray-950 { background-color: #f9fafb !important; }
+.light .bg-gray-900 { background-color: #ffffff !important; }
+.light .bg-gray-800 { background-color: #f3f4f6 !important; }
+.light .border-gray-800 { border-color: #e5e7eb !important; }
+.light .border-gray-700 { border-color: #d1d5db !important; }
+.light .text-gray-400 { color: #6b7280 !important; }
+.light .text-gray-300 { color: #374151 !important; }
+.light .text-gray-500 { color: #9ca3af !important; }
+.light .text-white { color: #111827 !important; }

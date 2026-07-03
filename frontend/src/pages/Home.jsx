@@ -34,28 +34,28 @@ function Home() {
         </div>
 
         <div className="grid grid-cols-3 gap-6">
-          {[
-            {
-              icon: '📄',
-              title: 'CV Analizi',
-              desc: 'Pozisyona uygunluk skoru ve eksik beceriler. ATS sistemlerinden geçmenizi sağlayacak derinlemesine analizler.',
-              link: '/analyze',
-              cta: 'Analizi Başlat'
-            },
-            {
-              icon: '🎤',
-              title: 'Mülakat Simülasyonu',
-              desc: 'Gerçek sorularla pratik yap, anında feedback al. Yapay zeka ile sesli ve görüntülü mülakat deneyimi.',
-              link: '/interview',
-              cta: 'Pratiğe Git'
-            },
-            {
-              icon: '✉️',
-              title: 'Cover Letter',
-              desc: 'Pozisyona özel kapak mektubu üret. Şirket kültürüne ve iş tanımına tam uyumlu, etkileyici metinler.',
-              link: '/cover-letter',
-              cta: 'Oluşturmaya Başla'
-            },
+        {[
+  {
+    icon: '📄',
+    title: 'CV Analizi',
+    desc: 'Hedef pozisyonunuza uygunluk skoru ve eksik beceriler. CV\'nizi güçlendirmek için kişiselleştirilmiş öneriler.',
+    link: '/analyze',
+    cta: 'Analizi Başlat'
+  },
+  {
+    icon: '🎤',
+    title: 'Mülakat Simülasyonu',
+    desc: 'Pozisyonunuza özel sorularla pratik yapın, anında geri bildirim alın. Her sektör ve meslek için uygun.',
+    link: '/interview',
+    cta: 'Pratiğe Git'
+  },
+  {
+    icon: '✉️',
+    title: 'Ön Yazı',
+    desc: 'Başvurduğunuz pozisyon ve şirkete özel ön yazı oluşturun. Profesyonel ve etkileyici metinler.',
+    link: '/cover-letter',
+    cta: 'Oluşturmaya Başla'
+  },
           ].map(card => (
             <div key={card.title} className="bg-gray-900 border border-gray-800 rounded-xl p-6 hover:border-gray-700 transition">
               <div className="text-3xl mb-4">{card.icon}</div>
@@ -77,11 +77,11 @@ function Home() {
               Kariyer <span className="text-blue-400">Yol Haritan</span> Hazır Mı?
             </h2>
             <p className="text-gray-400 mb-6">
-              Sadece nerede olduğunuzu değil, nereye gidebileceğinizi de gösteriyoruz. Hedeflediğiniz maaş ve pozisyon için öğrenmeniz gereken teknolojileri listeliyoruz.
-            </p>
+  Sadece nerede olduğunuzu değil, nereye gidebileceğinizi de gösteriyoruz. Hedeflediğiniz pozisyon için öğrenmeniz gereken becerileri adım adım listeleriz.
+</p>
             <div className="flex gap-2 flex-wrap mb-6">
-              {['React & Next.js', 'Python AI', 'Data Science', 'Cloud Architecture'].map(tag => (
-                <span key={tag} className="text-xs bg-gray-800 text-gray-300 px-3 py-1 rounded-full">{tag}</span>
+            {['Sağlık & Tıp', 'Eğitim', 'Finans', 'Mühendislik', 'Hukuk', 'Tasarım'].map(tag => (
+            <span key={tag} className="text-xs bg-gray-800 text-gray-300 px-3 py-1 rounded-full">{tag}</span>
               ))}
             </div>
             <Link to="/roadmap" className="text-blue-400 text-sm hover:text-blue-300 transition">

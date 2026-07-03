@@ -165,14 +165,6 @@ function Analyze() {
               ))}
             </div>
           </div>
-
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 flex items-center gap-3">
-            <span className="text-2xl">🔥</span>
-            <div>
-              <p className="font-medium text-sm">Popüler Tercih</p>
-              <p className="text-gray-400 text-xs">2,431 kişi bu ay CV analizi yaptı.</p>
-            </div>
-          </div>
         </div>
       </div>
 
