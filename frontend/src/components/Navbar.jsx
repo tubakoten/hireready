@@ -8,6 +8,7 @@ function Navbar({ darkMode, setDarkMode }) {
   const links = [
     { path: '/', label: 'Ana Sayfa' },
     { path: '/analyze', label: 'CV Analiz' },
+    { path: '/linkedin', label: 'LinkedIn' },
     { path: '/interview', label: 'Mülakat' },
     { path: '/cover-letter', label: 'Ön Yazı' },
     { path: '/roadmap', label: 'Yol Haritası' },

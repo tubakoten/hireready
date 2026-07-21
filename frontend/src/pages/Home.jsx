@@ -5,13 +5,13 @@ function Home() {
     <div className="min-h-screen bg-gray-950 text-white">
       {/* Hero */}
       <section className="max-w-5xl mx-auto px-6 py-24 text-center">
-        <h1 className="text-6xl font-bold mb-6">
+        <h1 className="text-4xl sm:text-6xl font-bold mb-6">
           Hayalindeki işe <span className="text-blue-400">hazırlan.</span>
         </h1>
-        <p className="text-gray-400 text-xl mb-10 max-w-2xl mx-auto">
+        <p className="text-gray-400 text-lg sm:text-xl mb-10 max-w-2xl mx-auto">
           CV'ni yükle, hedef pozisyonunu gir. AI ile uygunluk analizi yap, mülakat sorularıyla pratik yap.
         </p>
-        <div className="flex gap-4 justify-center mb-16">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
           <Link to="/analyze" className="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-lg font-medium transition text-lg">
             CV Analiz Et →
           </Link>
@@ -23,9 +23,9 @@ function Home() {
 
       {/* Features */}
       <section className="max-w-5xl mx-auto px-6 pb-16">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-8">
           <div>
-            <h2 className="text-3xl font-bold">Zekanızı <span className="text-blue-400">Kariyerinizle</span> Birleştirin</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold">Zekanızı <span className="text-blue-400">Kariyerinizle</span> Birleştirin</h2>
             <p className="text-gray-400 mt-2">Kariyer yolculuğunuzda size rehberlik edecek en gelişmiş yapay zeka araçlarını keşfedin.</p>
           </div>
           <Link to="/analyze" className="text-sm text-gray-400 hover:text-white transition whitespace-nowrap">
@@ -33,7 +33,7 @@ function Home() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {[
   {
     icon: '📄',
@@ -71,7 +71,7 @@ function Home() {
 
       {/* Roadmap CTA */}
       <section className="max-w-5xl mx-auto px-6 pb-24">
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="bg-gray-900 border border-gray-800 rounded-xl p-8">
             <h2 className="text-2xl font-bold mb-3">
               Kariyer <span className="text-blue-400">Yol Haritan</span> Hazır Mı?

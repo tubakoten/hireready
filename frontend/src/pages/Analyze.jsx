@@ -68,7 +68,7 @@ function Analyze() {
 
       {error && <div className="bg-red-900/30 border border-red-700 text-red-400 px-4 py-3 rounded-lg mb-6">{error}</div>}
 
-      <div className="grid grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         {/* Sol - Form */}
         <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
           {cvList.length > 0 && (
@@ -115,7 +115,7 @@ function Analyze() {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3 mb-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
             <div>
               <label className="text-sm text-gray-400 mb-1 block">Hedef Pozisyon *</label>
               <input type="text" value={position} onChange={e => setPosition(e.target.value)}
@@ -129,7 +129,7 @@ function Analyze() {
                 placeholder="Microsoft" />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
             <div>
               <label className="text-sm text-gray-400 mb-1 block">Sektör</label>
               <input type="text" value={sector} onChange={e => setSector(e.target.value)}
@@ -176,7 +176,7 @@ function Analyze() {
             <p className="text-gray-300 mt-4">{result.summary}</p>
           </div>
 
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
               <h3 className="font-semibold text-green-400 mb-4">✅ Güçlü Yanlar</h3>
               <ul className="space-y-2">

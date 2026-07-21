@@ -37,7 +37,7 @@ function Dashboard() {
       <p className="text-gray-400 mb-10">CV'lerini yönet, analizlerini takip et.</p>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-6 mb-10">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
         {[
           { label: 'YÜKLENEN CV', value: cvList.length, color: 'text-blue-400' },
           { label: 'ANALİZ YAPILDI', value: analyzeCount, color: 'text-green-400' },
@@ -100,7 +100,7 @@ function Dashboard() {
       )}
 
       {/* AI Öneri */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
           <p className="text-xs text-blue-400 font-medium mb-3">✨ AI ÖNERİSİ</p>
           <h3 className="text-xl font-bold mb-2">Roadmap Hazır!</h3>

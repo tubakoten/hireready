@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import Home from './pages/Home'
 import Analyze from './pages/Analyze'
+import LinkedIn from './pages/LinkedIn'
 import Interview from './pages/Interview'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -37,6 +38,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/analyze" element={<ProtectedRoute><Analyze darkMode={darkMode} /></ProtectedRoute>} />
+            <Route path="/linkedin" element={<ProtectedRoute><LinkedIn darkMode={darkMode} /></ProtectedRoute>} />
             <Route path="/interview" element={<ProtectedRoute><Interview darkMode={darkMode} /></ProtectedRoute>} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard darkMode={darkMode} /></ProtectedRoute>} />
             <Route path="/cover-letter" element={<ProtectedRoute><CoverLetter darkMode={darkMode} /></ProtectedRoute>} />

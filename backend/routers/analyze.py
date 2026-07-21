@@ -5,12 +5,45 @@ from models.schemas import AnalyzeRequest
 from routers.cv import get_current_user
 from openai import OpenAI
 import json
+import os
+import re
+import subprocess
 import traceback
 
 router = APIRouter(prefix="/analyze", tags=["analyze"])
 
+
+def _discover_foundry_endpoint() -> str:
+    """
+    Foundry Local'in dinlediği port, her 'foundry service start' çalıştırmasında
+    değişebiliyor (rastgele/ephemeral port). Bu yüzden sabit yazmak yerine:
+    1) FOUNDRY_LOCAL_ENDPOINT ortam değişkeni varsa onu kullan
+    2) 'foundry service status' komutunun çıktısından portu otomatik oku
+    3) İkisi de olmazsa eski varsayılan porta düş (garanti değil)
+    """
+    env_url = os.environ.get("FOUNDRY_LOCAL_ENDPOINT")
+    if env_url:
+        return env_url.rstrip("/")
+
+    try:
+        result = subprocess.run(
+            ["foundry", "service", "status"],
+            capture_output=True, text=True, timeout=5
+        )
+        match = re.search(r"http://127\.0\.0\.1:(\d+)", result.stdout)
+        if match:
+            return f"http://127.0.0.1:{match.group(1)}"
+    except Exception:
+        pass
+
+    return "http://127.0.0.1:50033"
+
+
+FOUNDRY_BASE_URL = _discover_foundry_endpoint()
+print(f"[Foundry Local] Kullanılan endpoint: {FOUNDRY_BASE_URL}")
+
 client = OpenAI(
-    base_url="http://127.0.0.1:50033/v1",
+    base_url=f"{FOUNDRY_BASE_URL}/v1",
     api_key="local"
 )
 

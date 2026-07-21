@@ -49,7 +49,7 @@ function CoverLetter() {
     <main className="max-w-5xl mx-auto px-6 py-12">
       {error && <div className="bg-red-900/30 border border-red-700 text-red-400 px-4 py-3 rounded-lg mb-6">{error}</div>}
 
-      <div className="grid grid-cols-2 gap-10 mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10">
         {/* Sol - Başlık ve Görsel */}
         <div>
           <span className="text-xs bg-blue-600/20 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-full">✨ AI-POWERED WRITER</span>
@@ -94,7 +94,7 @@ function CoverLetter() {
               )}
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-sm text-gray-400 mb-1 flex items-center gap-2 block">🗂️ Pozisyon *</label>
                 <input

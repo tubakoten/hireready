@@ -4,20 +4,17 @@ from models.database import get_db, CV, User
 from models.schemas import CVResponse
 from jose import JWTError, jwt
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from auth_config import SECRET_KEY, ALGORITHM
 from PyPDF2 import PdfReader
 import io
 
 router = APIRouter(prefix="/cv", tags=["cv"])
 
-SECRET_KEY = "hireready-secret-key-2024"
-ALGORITHM = "HS256"
 security = HTTPBearer()
 
 def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security), db: Session = Depends(get_db)):
     try:
-        print(f"Token: {credentials.credentials[:20]}...")
         payload = jwt.decode(credentials.credentials, SECRET_KEY, algorithms=[ALGORITHM])
-        print(f"Payload: {payload}")
         user_id = int(payload.get("sub"))
         user = db.query(User).filter(User.id == user_id).first()
         if not user:

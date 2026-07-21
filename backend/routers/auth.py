@@ -4,13 +4,10 @@ from models.database import get_db, User
 from models.schemas import UserCreate, UserLogin, Token, UserResponse
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
+from auth_config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 import bcrypt
 
 router = APIRouter(prefix="/auth", tags=["auth"])
-
-SECRET_KEY = "hireready-secret-key-2024"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
 
 def hash_password(password: str):
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')

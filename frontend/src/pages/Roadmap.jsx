@@ -76,7 +76,7 @@ function Roadmap() {
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="text-sm text-gray-400 mb-1 block">Hedef Pozisyon *</label>
               <input
@@ -110,7 +110,7 @@ function Roadmap() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
         <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 flex items-start gap-3">
           <span className="text-blue-400 text-xl">✨</span>
           <div>
