@@ -34,15 +34,22 @@ def generate_questions(
 
     lang_instruction = "ÖNEMLİ: Tüm soruları SADECE TÜRKÇE dilinde yaz. İngilizce kullanma." if language == "tr" else "IMPORTANT: Write all questions in English only."
     company_instruction = (
-        f"Sorulardan en az 2 tanesi {company} şirketinin kültürüne, değerlerine ve bu şirkette bu pozisyonda "
-        f"aranan niteliklere özel olsun (genel sorular değil, {company}'ye özgü olsun)."
+        f"Sorulardan tam olarak 1 tanesi {company} şirketiyle ilgili olsun — örneğin "
+        f"adayın {company} hakkında ne bildiğini ya da neden orada çalışmak istediğini sorsun. "
+        f"Bu soru kısa ve net bir cümle olsun, karmaşık olmasın."
         if company else ""
+    )
+    no_placeholder = (
+        "ÖNEMLİ: Aşağıdaki örnek sadece FORMAT göstermek içindir, örnekteki soruları ASLA "
+        "olduğu gibi kopyalama. Tam olarak 5 tane, birbirinden farklı, gerçek ve anlamlı "
+        "mülakat sorusu üret."
     )
 
     prompt = f"""
 {lang_instruction}
+{no_placeholder}
 
-Aşağıdaki CV'ye ve pozisyona göre 5 adet mülakat sorusu üret: {position}
+Aşağıdaki CV'ye ve pozisyona göre TAM OLARAK 5 adet mülakat sorusu üret: {position}
 {f"Şirket: {company}" if company else ""}
 Seviye: {level}
 {company_instruction}
@@ -50,22 +57,31 @@ Seviye: {level}
 CV İçeriği:
 {cv.content[:2000]}
 
-{lang_instruction}
+{no_placeholder}
 
-Şu formatta JSON döndür:
+Format örneği (SADECE yapıyı göstermek amaçlı, bu soruları asla kopyalama):
 {{
-    "questions": ["soru 1", "soru 2", "soru 3", "soru 4", "soru 5"]
+    "questions": [
+        "Bu pozisyona başvurma nedeninizi ve kariyer hedeflerinizi anlatır mısınız?",
+        "CV'nizde bahsettiğiniz bir projede karşılaştığınız en büyük zorluk neydi, nasıl çözdünüz?",
+        "Takım içinde bir anlaşmazlık yaşadığınız bir durumu ve nasıl yönettiğinizi anlatın.",
+        "Bu alandaki teknik bilginizi geliştirmek için neler yapıyorsunuz?",
+        "Beş yıl sonra kendinizi nerede görüyorsunuz?"
+    ]
 }}
 
-Sadece JSON döndür, başka hiçbir şey yazma. {lang_instruction}
+Şimdi SIRA SENDE: {position} pozisyonu ve yukarıdaki CV için, TAM OLARAK 5 tane kendi
+ürettiğin özgün soru içeren JSON döndür. {company_instruction}
+
+Sadece JSON döndür, başka hiçbir şey yazma. {no_placeholder} {lang_instruction}
 """
     try:
         response = client.chat.completions.create(
             model="qwen2.5-1.5b-instruct-generic-gpu:4",
-            max_tokens=800,
-            temperature=0.3,
+            max_tokens=900,
+            temperature=0.4,
             messages=[
-                {"role": "system", "content": f"Sen bir mülakat uzmanısın. {lang_instruction} Sadece JSON formatında cevap ver."},
+                {"role": "system", "content": f"Sen bir mülakat uzmanısın. {lang_instruction} {no_placeholder} Sadece JSON formatında cevap ver."},
                 {"role": "user", "content": prompt}
             ]
         )
@@ -94,9 +110,15 @@ def company_prep(
     current_user: User = Depends(get_current_user)
 ):
     lang_instruction = "ÖNEMLİ: Tüm cevabı SADECE TÜRKÇE dilinde yaz. İngilizce kullanma." if language == "tr" else "IMPORTANT: Write the entire response in English only."
+    no_placeholder = (
+        "ÖNEMLİ: Aşağıdaki örnek sadece FORMAT göstermek içindir, örnekteki cümleleri veya "
+        "'değer 1', 'odak alanı 2' gibi ifadeleri ASLA olduğu gibi kopyalama. Her alanı "
+        f"{company} şirketine ve {position} pozisyonuna göre gerçek, özgün içerikle doldur."
+    )
 
     prompt = f"""
 {lang_instruction}
+{no_placeholder}
 
 Bir aday {company} şirketinde {position} pozisyonu için mülakata hazırlanıyor.
 {f"Sektör: {sector}" if sector else ""}
@@ -107,25 +129,34 @@ Bildiğin kadarıyla {company} şirketinin kültürü, değerleri ve bu pozisyon
 Şirket hakkında emin olmadığın çok spesifik detaylar yerine, bu sektördeki ve bu ölçekteki
 şirketlerde genel olarak geçerli olan gerçekçi ve faydalı bilgiler ver.
 
-{lang_instruction}
+{no_placeholder}
 
-Şu formatta JSON döndür:
+Format örneği (farklı bir şirket için, SADECE yapıyı göstermek amaçlı — içeriği asla kopyalama):
 {{
-    "company_overview": "Şirketin bilinen kültürü/değerleri hakkında 2-3 cümlelik özet",
-    "culture_values": ["değer 1", "değer 2", "değer 3"],
-    "focus_areas": ["mülakatta öne çıkan odak alanı 1", "odak alanı 2", "odak alanı 3"],
-    "prep_tips": ["hazırlık ipucu 1", "hazırlık ipucu 2", "hazırlık ipucu 3"]
+    "company_overview": "Örnek A.Ş., hızlı büyüyen ürün odaklı bir teknoloji şirketi olarak biliniyor; takım içi otonomiye ve veri odaklı karar almaya önem veriyor.",
+    "culture_values": ["Sahiplenme kültürü", "Hız ve deneysellik", "Müşteri odaklılık"],
+    "focus_areas": ["Problem çözme yaklaşımın ve düşünce sürecin", "Takım içinde çatışma/işbirliği örnekleri", "Temel teknik yetkinliklerin"],
+    "prep_tips": ["Şirketin ürününü kullanıcı gibi deneyimleyip birkaç gözlem notu çıkar", "Geçmiş bir projede sahiplenme gösterdiğin somut bir örnek hazırla", "Şirketin mühendislik blogunu/kariyer sayfasını incele"]
 }}
 
-Sadece JSON döndür, başka hiçbir şey yazma. {lang_instruction}
+Şimdi SIRA SENDE: {company} şirketi ve {position} pozisyonu için, YUKARIDAKİ FORMATTA ama
+tamamen kendi ürettiğin, {company}'ye özgü gerçek içerikle JSON döndür:
+{{
+    "company_overview": "...",
+    "culture_values": ["...", "...", "..."],
+    "focus_areas": ["...", "...", "..."],
+    "prep_tips": ["...", "...", "..."]
+}}
+
+Sadece JSON döndür, başka hiçbir şey yazma. {no_placeholder} {lang_instruction}
 """
     try:
         response = client.chat.completions.create(
             model="qwen2.5-1.5b-instruct-generic-gpu:4",
             max_tokens=800,
-            temperature=0.3,
+            temperature=0.4,
             messages=[
-                {"role": "system", "content": f"Sen bir kariyer koçu ve mülakat hazırlık uzmanısın. {lang_instruction} Sadece JSON formatında cevap ver."},
+                {"role": "system", "content": f"Sen bir kariyer koçu ve mülakat hazırlık uzmanısın. {lang_instruction} {no_placeholder} Sadece JSON formatında cevap ver."},
                 {"role": "user", "content": prompt}
             ]
         )
